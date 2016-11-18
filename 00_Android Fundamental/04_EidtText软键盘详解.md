@@ -234,4 +234,7 @@ Android定义了一个属性，名字为windowSoftInputMode，这个属性用于
 	/>    
 
 
+![](https://github.com/JerryIreya/mynote/blob/master/00_Android%20Fundamental/images/softInputMode.jpg?raw=true)
+
+[彻底搞定Android开发中软键盘的常见问题](http://blog.csdn.net/mynameishuangshuai/article/details/51567357)
 

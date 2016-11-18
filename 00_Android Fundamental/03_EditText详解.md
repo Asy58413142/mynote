@@ -664,3 +664,6 @@ TextView的构造方法中，会获取android:text属性的值，调用setText()
 
 [InputFilter、TextWatcher详解](http://www.itdadao.com/articles/c15a735409p0.html)
 
+
+
+
