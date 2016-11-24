@@ -120,3 +120,93 @@ kotlin写的这个toast方法与下面的Java代码是一样的(一个顶多个�
 
 如果你没有写 参数名 = ，那么你就得在指定的参数位置传相应的参数。另外，要保证调用的时候的参数名和函数声明时候的参数名一致(AS会提示，很方便)
 
+## 编写第一个类 ##
+
+### 创建一个Layou ###
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    xmlns:tools="http://schemas.android.com/tools"
+	    android:id="@+id/activity_main"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    tools:context="cn.wang.kotlin.MainActivity">
+	
+	    <android.support.v7.widget.RecyclerView
+	        android:id="@+id/recyclerview"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent">
+	
+	    </android.support.v7.widget.RecyclerView>
+	
+	</FrameLayout>
+
+在MainActivity.kt中：
+
+    val linearLayoutManager = LinearLayoutManager(this)
+    linearLayoutManager.orientation = OrientationHelper.VERTICAL
+    recyclerview.layoutManager = linearLayoutManager
+
+RecyclerView的LayoutManager通过属性的方式被设置，而不是通过setter方法。
+
+对象实例化：
+
+	对象实例化也是与Java有些不同的。Kotlin去掉了new关键字。这时构造函数仍然会被调用，你传了几个参数就会去调用相应的构造函数。
+
+
+### The Recycler  Adapter ###
+
+我们同样需要一个RecyclerView的Adapter，该RecyclerView的每个条目都只是简单的包含一个TextView，我们直接用代码生成TextView即可。
+
+增加一个ForecastListAdapter.kt的Kotlin文件，包括以下代码：
+
+
+    /**
+	 * KotlinDemo
+	 * Created by Wang on 2016/11/24 14:51.
+	 *
+	 * 该Adapter类的主构造函数接收一个List<String>类型的items参数，并继承自RecyclerView.Adapter，泛型是我们的ViewHolder类型
+	 **/
+	class ForecastListAdapter(val items: List<String>) : RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
+	
+	    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+	    //        将第position个数据设置给相应条目的textview
+	        holder.textview.text = items[position]
+	    }
+	
+	    /**
+	     * getItemCount方法，返回值为items.size，根据Kotlin的类型推断Type Refernece可知，返回值类型为int
+	     */
+	    override fun getItemCount() = items.size
+	
+	    /**
+	     * 同上，返回值类型是ViewHolder类型，这里直接用代码创建了一个TextView对象，并作为创建ViewHolder对象的参数。
+	     */
+	    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(TextView(parent.context))
+	
+	
+	    /**
+	     * ViewHolder类，继承自RecyclerView.ViewHolder，主构造器接收一个TextView类型的参数，并用val声明，表示该变量是
+	     * ViewHolder类的成员变量，修饰符是public final。
+	     * 最后使用textview去调用父类的构造器，即相当于java中的super()
+	     */
+	    class ViewHolder(val textview: TextView) : RecyclerView.ViewHolder(textview)
+	}
+
+
+回到MainActivity，现在简单地创建一系列的String放入List中，然后使用创建分配Adapter实例。
+
+    val items = listOf(
+                "Mon 6/23 - Sunny - 31/17",
+                "Tue 6/24 - Foggy - 21/8",
+                "Wed 6/25 - Cloudy - 22/17",
+                "Thurs 6/26 - Rainy - 18/11",
+                "Fri 6/27 - Foggy - 21/10",
+                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
+                "Sun 6/29 - Sunny - 20/7"
+        )
+
+        recyclerview.adapter = ForecastListAdapter(items)
+
+## 变量和属性 ##
+
+在Kotlin中，**一切都是对象**。没有像Java中那样的原始基本类型。这个是非常有帮助的，因为我们可以使用一致的方式来处理所有的可用的类型。
